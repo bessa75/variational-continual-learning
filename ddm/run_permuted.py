@@ -1,19 +1,30 @@
 import numpy as np
 import tensorflow as tf
-import gzip
-import cPickle
 import sys
-sys.path.extend(['alg/'])
+import os
+
+# Add the 'alg' folder to the system path
+sys.path.append(os.path.join(os.getcwd(), 'alg'))
+
+# Now you can import the file in the 'alg' folder
 import vcl
 import coreset
 import utils
 from copy import deepcopy
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 class PermutedMnistGenerator():
     def __init__(self, max_iter=10):
-        f = gzip.open('data/mnist.pkl.gz', 'rb')
-        train_set, valid_set, test_set = cPickle.load(f)
-        f.close()
+        train0=np.load("data/train_x.npy")
+        train1=np.load("data/train_y.npy")
+        test0=np.load("data/test_x.npy")
+        test1=np.load("data/test_y.npy")
+        valid0=np.load("data/valid_x.npy")
+        valid1=np.load("data/valid_y.npy")
+        train_set=train0,train1
+        test_set=test0,test1
+        valid_set=valid0,valid1
 
         self.X_train = np.vstack((train_set[0], valid_set[0]))
         self.Y_train = np.hstack((train_set[1], valid_set[1]))
@@ -32,6 +43,7 @@ class PermutedMnistGenerator():
         else:
             np.random.seed(self.cur_iter)
             perm_inds = range(self.X_train.shape[1])
+            perm_inds = list(perm_inds)
             np.random.shuffle(perm_inds)
 
             # Retrieve train data
@@ -55,7 +67,7 @@ single_head = True
 num_tasks = 5
 
 # Run vanilla VCL
-tf.set_random_seed(12)
+tf.get_seed(12)
 np.random.seed(1)
 
 coreset_size = 0
@@ -66,7 +78,7 @@ print(vcl_result)
 
 # Run random coreset VCL
 tf.reset_default_graph()
-tf.set_random_seed(12)
+tf.get_seed(12)
 np.random.seed(1)
 
 coreset_size = 200
@@ -77,7 +89,7 @@ print(rand_vcl_result)
 
 # Run k-center coreset VCL
 tf.reset_default_graph()
-tf.set_random_seed(12)
+tf.get_seed(12)
 np.random.seed(1)
 
 data_gen = PermutedMnistGenerator(num_tasks)

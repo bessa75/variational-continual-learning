@@ -1,4 +1,6 @@
 import numpy as np
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 """ Random coreset selection """
 def rand_from_batch(x_coreset, y_coreset, x_train, y_train, coreset_size):

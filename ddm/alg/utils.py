@@ -3,6 +3,8 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 from cla_models_multihead import MFVI_NN
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 def merge_coresets(x_coresets, y_coresets):
     merged_x, merged_y = x_coresets[0], y_coresets[0]

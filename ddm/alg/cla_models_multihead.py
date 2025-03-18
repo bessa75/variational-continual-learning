@@ -1,9 +1,11 @@
 import tensorflow as tf
 import numpy as np
 from copy import deepcopy
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 np.random.seed(0)
-tf.set_random_seed(0)
+tf.get_seed(0)
 
 # variable initialization functions
 def weight_variable(shape, init_weights=None):
@@ -69,6 +71,7 @@ class Cla_NN(object):
         # Training cycle
         for epoch in range(no_epochs):
             perm_inds = range(x_train.shape[0])
+            perm_inds = list(perm_inds)
             np.random.shuffle(perm_inds)
             cur_x_train = x_train[perm_inds]
             cur_y_train = y_train[perm_inds]

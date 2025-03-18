@@ -9,6 +9,7 @@ import coreset
 import utils
 from copy import deepcopy
 
+
 class SplitMnistGenerator():
     def __init__(self):
         f = gzip.open('data/mnist.pkl.gz', 'rb')
@@ -59,35 +60,35 @@ no_epochs = 120
 single_head = False
 
 # Run vanilla VCL
-tf.set_random_seed(12)
+tf.random.set_seed(12)
 np.random.seed(1)
 
 coreset_size = 0
 data_gen = SplitMnistGenerator()
 vcl_result = vcl.run_vcl(hidden_size, no_epochs, data_gen, 
     coreset.rand_from_batch, coreset_size, batch_size, single_head)
-print vcl_result
+print(vcl_result)
 
 # Run random coreset VCL
 tf.reset_default_graph()
-tf.set_random_seed(12)
+tf.random.set_seed(12)
 np.random.seed(1)
 
 coreset_size = 40
 data_gen = SplitMnistGenerator()
 rand_vcl_result = vcl.run_vcl(hidden_size, no_epochs, data_gen, 
     coreset.rand_from_batch, coreset_size, batch_size, single_head)
-print rand_vcl_result
+print(rand_vcl_result)
 
 # Run k-center coreset VCL
 tf.reset_default_graph()
-tf.set_random_seed(12)
+tf.random.set_seed(12)
 np.random.seed(1)
 
 data_gen = SplitMnistGenerator()
 kcen_vcl_result = vcl.run_vcl(hidden_size, no_epochs, data_gen, 
     coreset.k_center, coreset_size, batch_size, single_head)
-print kcen_vcl_result
+print(kcen_vcl_result)
 
 # Plot average accuracy
 vcl_avg = np.nanmean(vcl_result, 1)

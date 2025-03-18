@@ -2,6 +2,8 @@ import numpy as np
 import tensorflow as tf
 import utils
 from cla_models_multihead import Vanilla_NN, MFVI_NN
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 def run_vcl(hidden_size, no_epochs, data_gen, coreset_method, coreset_size=0, batch_size=None, single_head=True):
     in_dim, out_dim = data_gen.get_dims()
